@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block content %}
+<section class="intro-band post-hero">
+    <div class="container intro-inner">
+        <p class="eyebrow"><span class="eyebrow-line"></span> Field notes</p>
+        <h1>{{ post.title }}</h1>
+        <p class="intro-copy">By {{  post.author.username}} <span aria-hidden="true">&middot;</span> {{ post.date_posted }}</p>
+        <a class="text-link" href="/home"><i class="bi bi-arrow-left" aria-hidden="true"></i> Back to all stories</a>
+    </div>
+</section>
+
+<section class="container post-detail-section">
+    <article class="post-detail">
+        <div class="post-meta">
+            <span class="post-category">Field notes</span>
+            <span class="meta-dot"></span>
+            <time>{{ post.date_posted.strftime("%B %d, %Y") }}</time>
+        </div>
+        <div class="post-detail-author">
+            <img src="{{ post.author.image_path }}" alt="">
+            <span>By <strong>{{ post.author.username}}</strong></span>
+        </div>
+        <div class="post-detail-content">
+            <p>{{ post.content }}</p>
+        </div>
+        <a class="all-stories-link" href="/home"><i class="bi bi-arrow-left" aria-hidden="true"></i> All stories</a>
+    </article>
+</section>
+{% endblock content %}

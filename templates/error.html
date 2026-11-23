@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block content %}
+<section class="auth-section container">
+    <div class="auth-card">
+        <p class="vote-eyebrow">Error {{ status_code|default(" ") }}</p>
+        <h1>{{ title|default("Something went wrong") }}<span>.</span></h1>
+        <p class="auth-intro">{{ message|default("An unexpected error occurred. Please try again.") }}</p>
+        <a class="btn btn-civic" href="/">Return to the election <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i></a>
+    </div>
+</section>
+{% endblock content %}

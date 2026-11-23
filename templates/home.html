@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+{% block content %}
+<section class="vote-hero">
+    <div class="container vote-hero-inner">
+        <div class="vote-hero-copy">
+            <p class="vote-eyebrow"><span></span> Your community. Your choice.</p>
+            <h1>Make your voice<br><em>count.</em></h1>
+            <p class="vote-hero-text">A fair vote starts with you. Choose the candidate you believe will move our community forward.</p>
+            {% if not user %}
+            <div class="d-flex flex-wrap gap-3">
+                <a class="btn btn-civic btn-lg" href="/register">Get started <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i></a>
+                <a class="hero-login-link" href="/login">Already registered? Sign in</a>
+            </div>
+            {% elif has_voted %}
+            <div class="vote-confirmation"><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Your vote is in. Thank you for taking part.</div>
+            {% else %}
+            <div class="vote-confirmation vote-ready"><i class="bi bi-shield-check" aria-hidden="true"></i> Signed in as {{ user.username }}. You have one vote.</div>
+            {% endif %}
+        </div>
+        <div class="hero-seal" aria-hidden="true"><i class="bi bi-check2"></i><span>COUNT<br>ME IN</span></div>
+        <div class="hero-bottom-note"><span class="status-pulse"></span> A community election, open to every registered voter</div>
+    </div>
+</section>
+
+<section class="container election-content">
+    <div class="election-heading">
+        <div>
+            <p class="vote-eyebrow">The candidates</p>
+            <h2>Choose your candidate<span>.</span></h2>
+        </div>
+        <div class="election-count"><strong>{{ total_votes }}</strong><span>vote{% if total_votes != 1 %}s{% endif %} cast</span></div>
+    </div>
+
+    <div class="candidate-grid">
+        {% for result in results %}
+        <article class="candidate-card">
+            <div class="candidate-card-top">
+                <span class="candidate-number">0{{ loop.index }}</span>
+                <span class="candidate-symbol"><i class="bi bi-person" aria-hidden="true"></i></span>
+            </div>
+            <div class="candidate-details">
+                <p class="candidate-label">Candidate {{ loop.index }}</p>
+                <h3>{{ result.candidate.name }}</h3>
+                {% if user and not has_voted %}
+                <form action="/vote" method="post">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <input type="hidden" name="candidate_id" value="{{ result.candidate.id }}">
+                    <button class="btn btn-civic candidate-vote-button" type="submit">
+                        Vote for {{ result.candidate.name }} <i class="bi bi-arrow-up-right ms-2" aria-hidden="true"></i>
+                    </button>
+                </form>
+                {% elif not user %}
+                <a class="btn btn-outline-civic candidate-vote-button" href="/login">Sign in to vote <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i></a>
+                {% else %}
+                <div class="candidate-result">
+                    <div class="candidate-result-label"><span>{{ result.votes }} vote{% if result.votes != 1 %}s{% endif %}</span><strong>{{ result.percentage }}%</strong></div>
+                    <div class="result-track" role="progressbar" aria-label="Share of votes for {{ result.candidate.name }}" aria-valuenow="{{ result.percentage }}" aria-valuemin="0" aria-valuemax="100">
+                        <span style="width: {{ result.percentage }}%"></span>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    <div class="privacy-note"><i class="bi bi-shield-check" aria-hidden="true"></i><p><strong>One account, one vote.</strong> Your ballot is stored in the election database, and live totals are available on the results page.</p></div>
+</section>
+{% endblock content %}

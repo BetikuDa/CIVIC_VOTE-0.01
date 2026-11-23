@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block content %}
+<section class="auth-section container">
+    <div class="auth-card setup-card">
+        <p class="vote-eyebrow">First-time setup</p>
+        <h1>Set your candidates<span>.</span></h1>
+        <p class="auth-intro">Add the two candidates for this election. This setup can only be completed once.</p>
+        {% if error %}<div class="form-alert" role="alert">{{ error }}</div>{% endif %}
+        <form action="/setup" method="post" class="auth-form">
+            <label for="candidate_one">Candidate one</label>
+            <input id="candidate_one" name="candidate_one" type="text" maxlength="80" required>
+            <label for="candidate_two">Candidate two</label>
+            <input id="candidate_two" name="candidate_two" type="text" maxlength="80" required>
+            <button class="btn btn-civic btn-lg w-100" type="submit">Create election <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i></button>
+        </form>
+    </div>
+</section>
+{% endblock content %}

@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block content %}
+<section class="auth-section container">
+    <div class="auth-card">
+        <p class="vote-eyebrow">{% if mode == "register" %}Join the election{% else %}Welcome back{% endif %}</p>
+        <h1>{% if mode == "register" %}Create your account<span>.</span>{% else %}Sign in to vote<span>.</span>{% endif %}</h1>
+        <p class="auth-intro">{% if mode == "register" %}Register once, then cast one vote for your preferred candidate.{% else %}Sign in with your username or email to continue to the ballot.{% endif %}</p>
+        {% if error %}<div class="form-alert" role="alert">{{ error }}</div>{% endif %}
+        <form action="/{{ mode }}" method="post" class="auth-form">
+            {% if mode == "register" %}
+            <label for="username">Username</label>
+            <input id="username" name="username" type="text" maxlength="50" autocomplete="username" required>
+            <label for="email">Email address</label>
+            <input id="email" name="email" type="email" maxlength="120" autocomplete="email" required>
+            {% else %}
+            <label for="identifier">Username or email</label>
+            <input id="identifier" name="identifier" type="text" autocomplete="username" required>
+            {% endif %}
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" minlength="8" maxlength="128" autocomplete="{% if mode == 'register' %}new-password{% else %}current-password{% endif %}" required>
+            {% if mode == "register" %}<small class="form-hint">Use at least 8 characters.</small>{% endif %}
+            <button class="btn btn-civic btn-lg w-100" type="submit">{% if mode == "register" %}Create account and continue{% else %}Sign in{% endif %}<i class="bi bi-arrow-right ms-2" aria-hidden="true"></i></button>
+        </form>
+        <p class="auth-switch">{% if mode == "register" %}Already have an account? <a href="/login">Sign in</a>{% else %}New to Civic Vote? <a href="/register">Create an account</a>{% endif %}</p>
+    </div>
+</section>
+{% endblock content %}
